@@ -11,7 +11,7 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 const User = require('./schema/User')
-const books = require('./schema/books')
+const books = require('./schema/Books')
 
 module.exports = {
   User: mongoose.module('User', User)

@@ -2,7 +2,6 @@ const mongoose = require('mongoose')
 const md5 = require('spark-md5')
 
 const User = new mongoose.Schema({
-  create_at: Date,
   username: {
     type: String,
     validate: {
@@ -12,6 +11,29 @@ const User = new mongoose.Schema({
       message: '{VALUE} is not a valid username (length >= 2, English characters, numbers and underscores only).'
     }
     required: [true, 'Username is required']
+  },
+
+  worknumber: {
+    type: Number
+  },
+
+  age: {
+    type: Number
+  },
+
+  name: {
+    type: String,
+    validate: {
+      validator: name => {
+        return /[a-zA-Z,]+/.test(name) && username.length >= 2
+      }
+      message: '{VALUE} is not a valid name (length >= 2, English characters and comma only).'
+    }
+    required: [true, 'name is required']
+  },
+
+  gender: {
+    type: String,
   },
 
   password: {
