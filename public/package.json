@@ -5,9 +5,15 @@
   "dependencies": {
     "axios": "^0.16.1",
     "elemental": "^0.6.1",
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4",
-    "react-router": "^4.1.1"
+    "history": "^4.6.1",
+    "material-ui": "^0.17.1",
+    "react": "^15.4.2",
+    "react-addons-css-transition-group": "^15.4.2",
+    "react-addons-transition-group": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-router": "^2.8.1",
+    "react-router-transition": "0.0.6",
+    "react-tap-event-plugin": "^2.0.1"
   },
   "devDependencies": {
     "react-scripts": "0.9.5"

@@ -1,7 +1,15 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import ReactDOM from 'react-dom'
-import { Form, FormIconField, FormInput, Button, Card, Alert, Glyph } from 'elemental'
+import { Form, FormInput, FormField, Card, Alert, Button } from 'elemental'
+import '../styles.min.css'
+
+const styles = {
+  containerStyle: {
+    width: '400px',
+    margin: '200px auto'
+  }
+}
 
 export default class extends Component {
   constructor() {
@@ -41,21 +49,24 @@ export default class extends Component {
 
   render() {
     return (
-      <Card>
-        <Form onSubmit={this.login}>
-          {
-            this.state.errorMessage
-              ? <Alert type="danger"><strong>Error:</strong> {this.state.errorMessage}</Alert>
-              : null
-          }
-          <FormField label="username" htmlFor="form-input-username">
-            <FormInput autoFocus type="username" placeholder="Enter username" name="name" ref="name" />
-          </FormField>
-          <FormField label="password" htmlFor="form-input-password">
-            <FormInput type="password" placeholder="password" name="password" ref="password" />
-          </FomrField>
-        </Form>
-      </Card>
+      <div style={styles.containerStyle}>
+        <Card>
+          <Form onSubmit={this.login}>
+            {
+              this.state.errorMessage
+                ? <Alert type="danger"><strong>Error:</strong> {this.state.errorMessage}</Alert>
+                : null
+            }
+            <FormField label="username" htmlFor="form-input-username">
+              <FormInput autoFocus type="username" placeholder="Enter username" name="name" ref="name" />
+            </FormField>
+            <FormField label="password" htmlFor="form-input-password">
+              <FormInput type="password" placeholder="password" name="password" ref="password" />
+            </FormField>
+            <Button submit>login</Button>
+          </Form>
+        </Card>
+      </div>
     )
   }
 }

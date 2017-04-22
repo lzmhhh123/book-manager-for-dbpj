@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 var app = express();
 
@@ -13,10 +14,19 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public/public')));
+app.use(express.static(path.join(__dirname, 'public', 'build')));
 
-app.use('/', require('./routes/index'));
-app.use('/users', require('./routes/users'));
+app.use(session({
+  secret: 'lzmhhh123',
+  name: 'book-manager-for-dbpj',
+  cookie: {maxAge: 100*800},
+  resave: false,
+  saveUninitialized: true,
+}));
+
+app.use('/', require('./routes/user'))
+app.use('/', require('./routes/findbooks'))
+app.use('/profile/edit', require('./routes/editprofile'))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

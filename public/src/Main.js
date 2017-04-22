@@ -1,38 +1,41 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 import {
   Router,
   Route,
-  Redirect,
-  IndexRedirect,
-  IndexRoute,
-  Link,
   browserHistory,
-  hashHistory,
+  IndexRoute
 } from 'react-router'
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme'
+import lightBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
+import Topnav from './Topnav'
+import Homepage from './Homepage'
+import Profile from './Profile'
+import EditProfile from './EditProfile'
+import Login from './Login'
+
+console.log(window);
 
 export default class extends Component {
   render() {
-    if(!window.z) {
-      return (
-        <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-          <Router history={browserHistory}>
-            <Router path="/" component={Login} />
-          </Router>
-        </MuiThemeProvider>
-      )
-    }
+
+    // if(!window.z) {
+    //   return (
+    //     <MuiThemeProvider>
+    //       <Router history={browserHistory}>
+    //         <Route path="/" component={Login} />
+    //       </Router>
+    //     </MuiThemeProvider>
+    //   )
+    // }
 
     return (
-      <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+      <MuiThemeProvider >
         <Router history={browserHistory}>
-          <Route path="/" component={Topnav}>
-            <Route path="/homepage" component={Homepage} />
+          <Route path="/" component={Topnav} >
+            <IndexRoute component={Homepage} />
             <Route path="/profile" component={Profile} />
-            <Route path="/profile/edit" component={Editprofile} />
+            <Route path="/profile/edit" component={EditProfile} />
           </Route>
         </Router>
       </MuiThemeProvider>

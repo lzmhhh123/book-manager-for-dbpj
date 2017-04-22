@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const Books = new mongoose.schema({
+const Books = new mongoose.Schema({
 
   isbn: {
     type: String
@@ -21,7 +21,7 @@ const Books = new mongoose.schema({
   publishing_house: {
     type: String
   }
-  
+
 })
 
 module.exports = Books
