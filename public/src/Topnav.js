@@ -17,7 +17,7 @@ injectTapEventPlugin()
 const styles = {
   containerStyle: {
     margin: '20px auto',
-    width: 800
+    width: 820
   }
 }
 
