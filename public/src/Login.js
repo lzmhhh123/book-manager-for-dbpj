@@ -3,6 +3,7 @@ import axios from 'axios'
 import ReactDOM from 'react-dom'
 import { Form, FormInput, FormField, Card, Alert, Button } from 'elemental'
 import '../styles.min.css'
+import config from '../../config/index.json'
 
 const styles = {
   containerStyle: {
@@ -25,7 +26,7 @@ export default class extends Component {
     const username = ReactDOM.findDOMNode(this.refs.name).value
     const password = ReactDOM.findDOMNode(this.refs.password).value
     axios
-      .post('/login',{username, password})
+      .post(config.host + '/login', {username, password})
       .then(res => {
         if (res.data.error) {
           this.setState({

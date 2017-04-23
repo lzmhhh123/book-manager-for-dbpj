@@ -32,10 +32,10 @@ router.post('/editprofile', (req, res) => {
       if (username) {
         User.findOne({ username } , (err, user) => {
           if(err) {
-            return res.status(500).send({ error: 1, memssage: 'Server error.'})
+            return res.status(500).send({ error: 1, message: 'Server error.'})
           }
           if(user) {
-            return res.status(401).send({ error: 1, memssage: 'New username is not unique.'})
+            return res.status(401).send({ error: 1, message: 'New username is not unique.'})
           }
         })
         user.name = username

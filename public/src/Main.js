@@ -13,8 +13,9 @@ import Homepage from './Homepage'
 import Profile from './Profile'
 import EditProfile from './EditProfile'
 import Login from './Login'
-
-console.log(window);
+import UnpaidBooks from './UnpaidBooks'
+import Bill from './Bill'
+import ManageUser from './ManageUser'
 
 export default class extends Component {
   render() {
@@ -36,6 +37,9 @@ export default class extends Component {
             <IndexRoute component={Homepage} />
             <Route path="/profile" component={Profile} />
             <Route path="/profile/edit" component={EditProfile} />
+            <Route path="/bill" component={Bill} />
+            <Route path="/unpaid-books" component={UnpaidBooks} />
+            <Route path="/z-admin" component={ManageUser} />
           </Route>
         </Router>
       </MuiThemeProvider>

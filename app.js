@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var cors = require('express-cors');
 
 var app = express();
 
@@ -19,13 +20,16 @@ app.use(express.static(path.join(__dirname, 'public', 'build')));
 app.use(session({
   secret: 'lzmhhh123',
   name: 'book-manager-for-dbpj',
-  cookie: {maxAge: 100*800},
+  cookie: {maxAge: 100*80},
   resave: false,
   saveUninitialized: true,
 }));
 
-app.use('/', require('./routes/user'))
-app.use('/', require('./routes/findbooks'))
+app.use('/', require('./routes/auth'))
+app.use('/', require('./routes/books'))
+app.use('/unpaid-books', require('./routes/bill'))
+app.use('/bill', require('./routes/bill'))
+app.use('/z-admin', require('./routes/user'))
 app.use('/profile/edit', require('./routes/editprofile'))
 
 // catch 404 and forward to error handler

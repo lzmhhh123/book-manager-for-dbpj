@@ -39,10 +39,6 @@ export default class extends Component {
     })
   }
 
-  sellBook = () => {
-    
-  }
-
   componentWillMount() {
     axios
       .post(config.host + '/findbooks')
@@ -63,6 +59,41 @@ export default class extends Component {
     return false
   }
 
+  addBook(event) {
+    event.preventDefault()
+    const isbn = ReactDOM.findDOMNode(this.refs.isbn).value
+    const number = ReactDOM.findDOMNode(this.refs.number).value
+    const name = ReactDOM.findDOMNode(this.refs.name).value
+    const author = ReactDOM.findDOMNode(this.refs.author).value
+    const publishing_house = ReactDOM.findDOMNode(this.refs.publishing_house).value
+
+    axios
+      .post(config.host+'/addbook', {isbn, number, name, author, publishing_house})
+      .then(res => {
+        if(res.data.error) {
+          this.setState({
+            errorMessage: res.data.message
+          })
+        }
+      })
+      .catch(err => {
+        this.setState({
+          errorMessage: err.response.data.message
+        })
+      })
+
+    if(!this.errorMessage) window.location.pathname = '/'
+    return false
+  }
+
+  paybook = () => {
+
+  }
+
+  cancelbook = () => {
+    
+  }
+
   render() {
     return (
       <div>
@@ -76,7 +107,7 @@ export default class extends Component {
             <TableHeader>
               <TableRow>
                 <TableHeaderColumn colSpan="6" tooltip="book list" style={{textAlign: 'center'}}>
-                  Paid Book List
+                  Unpaid Book List
                 </TableHeaderColumn>
               </TableRow>
               <TableRow>
@@ -90,7 +121,7 @@ export default class extends Component {
             </TableHeader>
             <TableBody>
               {tableData.map( (row, index) => (
-                row.status === 1 ?
+                row.status === 0 ?
                 <TableRow key={index} >
                   <TableRowColumn>{row.isbn}</TableRowColumn>
                   <TableRowColumn>{row.number}</TableRowColumn>
@@ -103,7 +134,39 @@ export default class extends Component {
             </TableBody>
           </Table>
           <Divider/>
-          <RaisedButton primary={true} style={styles.button} onTouchTap={this.sellBook}>Sell</RaisedButton>
+          <RaisedButton primary={true} style={styles.button} onTouchTap={this.HandleOpen}>Import</RaisedButton>
+          <Dialog
+            title="import a new book"
+            modal={false}
+            open={this.state.open}
+          >
+            <Form type="horizontal" onSubmit={this.addBook}>
+              {
+                this.state.errorMessage
+                  ? <Alert type="danger"><strong>Error:</strong> {this.state.errorMessage}</Alert>
+                  : null
+              }
+              <FormField label="ISBN" htmlFor="horizontal-form-input-isbn">
+                <FormInput type="isbn" placeholder="ISBN" name="horizontal-form-input-isbn" ref='isbn'/>
+              </FormField>
+              <FormField label="Number" htmlFor="horizontal-form-input-number">
+                <FormInput type="number" placeholder="NUMBER" name="horizontal-form-input-number" ref='number'/>
+              </FormField>
+              <FormField label="Name" htmlFor="horizontal-form-input-name">
+                <FormInput type="name" placeholder="NAME" name="horizontal-form-input-name" ref='name'/>
+              </FormField>
+              <FormField label="Author" htmlFor="horizontal-form-input-author">
+                <FormInput type="author" placeholder="AUTHOR" name="horizontal-form-input-author" ref='author'/>
+              </FormField>
+              <FormField label="Publishing House" htmlFor="horizontal-form-input-publishing_house">
+                <FormInput type="publishing_house" placeholder="PUBLISHING HOUSE" name="horizontal-form-input-publishing_house" ref='publishing_house'/>
+              </FormField>
+              <FlatButton label="Cancel" primary={true} onTouchTap={this.HandleClose} />
+              <Button type="primary" submit>Submit</Button>
+            </Form>
+          </Dialog>
+          <RaisedButton primary={true} style={styles.button} onTouchTap={this.paybook}>Pay</RaisedButton>
+          <RaisedButton primary={true} style={styles.button} onTouchTap={this.cancelbook}>Cancel order</RaisedButton>
         </Paper>
       </div>
     )

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router'
 import ReactDOM from 'react-dom'
 import axios from 'axios'
+import config from '../../config/index.json'
 
 import Paper from 'material-ui/Paper'
 import Divider from 'material-ui/Divider'
@@ -42,7 +43,7 @@ export default class extends Component {
     const oldPassword = ReactDOM.findDOMNode(this.refs.oldpassword).value
 
     axios
-      .post('/editprofile', { username, password, repeatpassword, oldPassword} )
+      .post(config.host+'/editprofile', { username, password, repeatpassword, oldPassword} )
       .then(res => {
         if(res.data.error) {
           this.setState ({

@@ -10,6 +10,14 @@ const Books = new mongoose.Schema({
     type: Number
   },
 
+  price: {
+    type: Number
+  },
+
+  status: {
+    type: Number
+  }
+
   name: {
     type: String
   },

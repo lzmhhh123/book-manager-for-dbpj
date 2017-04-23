@@ -12,8 +12,10 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 const User = require('./schema/User')
 const Books = require('./schema/Books')
+const Bill = require('./schema/Bill')
 
 module.exports = {
   User: mongoose.model('User', User),
-  Books: mongoose.model('Books', Books)
+  Books: mongoose.model('Books', Books),
+  Bill: mongoose.moduk('Bill', Bill)
 }
