@@ -6,7 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var cors = require('express-cors');
-const fs = require('fs')
 
 var app = express();
 
@@ -16,15 +15,6 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-// app.get('/', ((req, res) => {
-//   fs.readFile('./public/build/index.html', (err, data) => {
-//     let s = ""
-//     if(req.session.user) s = JSON.stringify(req.session.user)
-//     data.replace(/<script/, "<script>window.z=" + s + "</script><script")
-//   })
-// })())
-app.use(express.static(path.join(__dirname, 'public', 'build')));
-
 app.use(session({
   secret: 'lzmhhh123',
   name: 'book-manager-for-dbpj',
@@ -32,6 +22,14 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
 }));
+// app.get('/', ((req, res) => {
+//   fs.readFile('./public/build/index.html', (err, data) => {
+//     let s = ""
+//     if(req.session.user) s = JSON.stringify(req.session.user)
+//     data.replace(/<script/, "<script>window.z=" + s + "</script><script")
+//   })
+// })())
+app.use('/app', express.static(path.join(__dirname, 'public', 'build')));
 
 app.use('/', require('./routes/auth'))
 app.use('/', require('./routes/books'))
