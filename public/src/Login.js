@@ -26,7 +26,7 @@ export default class extends Component {
     const username = ReactDOM.findDOMNode(this.refs.name).value
     const password = ReactDOM.findDOMNode(this.refs.password).value
     axios
-      .post(config.host + '/login', {username, password})
+      .post('/login', {username, password})
       .then(res => {
         if (res.data.error) {
           this.setState({

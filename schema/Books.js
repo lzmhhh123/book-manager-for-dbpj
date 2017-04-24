@@ -16,7 +16,7 @@ const Books = new mongoose.Schema({
 
   status: {
     type: Number
-  }
+  },
 
   name: {
     type: String

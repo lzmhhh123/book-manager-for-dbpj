@@ -19,11 +19,12 @@ var tableData = []
 export default class extends Component {
   constructor() {
     super()
-    this.addBook = this.addBook.bind(this)
+    this.sellBook = this.sellBook.bind(this)
     this.state = {
       height: '600px',
       open: false,
-      errorMessage: null
+      errorMessage: null,
+      selectNumber: null
     }
   }
 
@@ -39,13 +40,50 @@ export default class extends Component {
     })
   }
 
-  sellBook = () => {
-    
+  HandleSelection = (key) => {
+    if(!key[0]) {
+      this.setState({
+        selectNumber: null
+      })
+    }
+    else {
+      this.setState({
+        selectNumber: key[0]
+      })
+    }
+  }
+
+  sellBook(event) {
+    event.preventDefault()
+    const number = ReactDOM.findDOMNode(this.refs.number).value
+    const isbn = tableData[this.state.selectNumber].isbn
+    axios
+      .post('/sellbook', {number, isbn})
+      .then(res => {
+        if(res.data.err) {
+          this.setState({
+            errorMessage: res.data.message
+          })
+        }
+        else {
+          this.setState({
+            errorMessage: null
+          })
+        }
+      })
+      .catch(err => {
+        this.setState({
+          errorMessage: err.response.data.message
+        })
+      })
+
+    if(!this.state.errorMessage) window.location.pathname = config.host + '/'
+    return false
   }
 
   componentWillMount() {
     axios
-      .post(config.host + '/findbooks')
+      .post('/findbooks')
       .then(res => {
         if(res.data.err) {
           this.setState({
@@ -72,6 +110,7 @@ export default class extends Component {
             fixedHeader={true}
             fixedFooter={false}
             selectTable={false}
+            onRowSelection={this.HandleSelection}
           >
             <TableHeader>
               <TableRow>
@@ -91,7 +130,7 @@ export default class extends Component {
             <TableBody>
               {tableData.map( (row, index) => (
                 row.status === 1 ?
-                <TableRow key={index} >
+                <TableRow key={index}>
                   <TableRowColumn>{row.isbn}</TableRowColumn>
                   <TableRowColumn>{row.number}</TableRowColumn>
                   <TableRowColumn>{row.name}</TableRowColumn>
@@ -103,7 +142,25 @@ export default class extends Component {
             </TableBody>
           </Table>
           <Divider/>
-          <RaisedButton primary={true} style={styles.button} onTouchTap={this.sellBook}>Sell</RaisedButton>
+          <RaisedButton primary={true} style={styles.button} onTouchTap={this.HandleOpen} disabled={this.state.selectNumber === null ? true : false}>Sell</RaisedButton>
+          <Dialog
+            title="how many to sell?"
+            modal={false}
+            open={this.state.open}
+          >
+            <Form type="horizontal" onSubmit={this.sellBook}>
+              {
+                this.state.errorMessage
+                  ? <Alert type="danger"><strong>Error:</strong> {this.state.errorMessage}</Alert>
+                  : null
+              }
+              <FormField label="Number of sells" htmlFor="horizontal-form-input-number">
+                <FormInput type="number" placeholder="NUMBER" name="horizontal-form-input-number" ref='number'/>
+              </FormField>
+              <FlatButton label="Cancel" primary={true} onTouchTap={this.HandleClose} />
+              <Button type="primary" submit>Submit</Button>
+            </Form>
+          </Dialog>
         </Paper>
       </div>
     )

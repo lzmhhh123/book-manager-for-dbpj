@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var cors = require('express-cors');
+const fs = require('fs')
 
 var app = express();
 
@@ -15,6 +16,13 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+// app.get('/', ((req, res) => {
+//   fs.readFile('./public/build/index.html', (err, data) => {
+//     let s = ""
+//     if(req.session.user) s = JSON.stringify(req.session.user)
+//     data.replace(/<script/, "<script>window.z=" + s + "</script><script")
+//   })
+// })())
 app.use(express.static(path.join(__dirname, 'public', 'build')));
 
 app.use(session({
@@ -27,10 +35,9 @@ app.use(session({
 
 app.use('/', require('./routes/auth'))
 app.use('/', require('./routes/books'))
-app.use('/unpaid-books', require('./routes/bill'))
-app.use('/bill', require('./routes/bill'))
-app.use('/z-admin', require('./routes/user'))
-app.use('/profile/edit', require('./routes/editprofile'))
+app.use('/', require('./routes/bill'))
+app.use('/', require('./routes/user'))
+app.use('/', require('./routes/editprofile'))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

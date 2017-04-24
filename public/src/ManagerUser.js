@@ -5,12 +5,15 @@ import {Paper, RaisedButton, Divider, FlatButton} from 'material-ui'
 import {Table, TableBody, TableHeader, TableFooter, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
 import TextField from 'material-ui/TextField'
 import Dialog from 'material-ui/Dialog'
-import {Form, FormField, FormInput, Alert, Button} from 'elemental'
+import {Form, FormField, FormInput, Alert, Button, Radio, RadioButtonGroup} from 'elemental'
 import config from '../../config/index.json'
 
 const styles = {
   button: {
     margin: 12
+  },
+  radioButton: {
+    marginBottom: 16
   }
 }
 
@@ -19,11 +22,13 @@ var tableData = []
 export default class extends Component {
   constructor() {
     super()
-    this.addbook = this.addbook.bind(this)
+    this.adduser = this.adduser.bind(this)
     this.state = {
       height: '600px',
       open: false,
-      errorMessage: null
+      errorMessage: null,
+      gender: null,
+      status: null
     }
   }
 
@@ -41,15 +46,20 @@ export default class extends Component {
 
   componentWillMount() {
     axios
-      .post(config.host + '/finduser')
+      .post('/finduser')
       .then(res => {
         if(res.data.err) {
           this.setState({
             errorMessage: res.data.message,
           })
         }
-        tableData = res.data.books
-        this.forceUpdate()
+        else {
+          this.setState({
+            errorMessage: null
+          })
+          tableData = res.data.books
+          this.forceUpdate()
+        }
       })
       .catch(err => {
         this.setState({
@@ -61,8 +71,36 @@ export default class extends Component {
 
   adduser(event) {
     event.preventDefault()
+    const username = ReactDOM.findDOMNode(this.refs.username).value
+    const name = ReactDOM.findDOMNode(this.refs.name).value
+    const worknumber = ReactDOM.findDOMNode(this.refs.worknumber).value
+    const password = ReactDOM.findDOMNode(this.refs.password).value
+    const vpassword = ReactDOM.findDOMNode(this.refs.vpassword).value
+    const birthday = ReactDOM.findDOMNode(this.refs.birthday).value
+    const gender = this.state.gender
+    const status = this.state.status
 
-    if(!this.errorMessage) window.location.pathname = '/'
+    axios
+      .post('/adduser', {username, name, worknumber, password, vpassword, birthday, gender, status})
+      .ther(res => {
+        if(res.data.error) {
+          this.setState({
+            errorMessage: res.data.message
+          })
+        }
+        else {
+          this.setState({
+            errorMessage: res.data.message
+          })
+        }
+      })
+      .catch(err => {
+        this.setState({
+          errorMessage: err.response.data.message
+        })
+      })
+
+    if(!this.errorMessage) window.location.pathname = '/z-admin'
     return false
   }
 
@@ -86,7 +124,7 @@ export default class extends Component {
                 <TableHeaderColumn tooltip="The username">Username</TableHeaderColumn>
                 <TableHeaderColumn tooltip="The work number">Work number</TableHeaderColumn>
                 <TableHeaderColumn tooltip="The name">Name</TableHeaderColumn>
-                <TableHeaderColumn tooltip="The age">Age</TableHeaderColumn>
+                <TableHeaderColumn tooltip="The birthday">Birthday</TableHeaderColumn>
                 <TableHeaderColumn tooltip="The gender">Gender</TableHeaderColumn>
                 <TableHeaderColumn tooltip="Is super user?">Super user</TableHeaderColumn>
               </TableRow>
@@ -97,7 +135,7 @@ export default class extends Component {
                   <TableRowColumn>{row.username}</TableRowColumn>
                   <TableRowColumn>{row.worknumber}</TableRowColumn>
                   <TableRowColumn>{row.name}</TableRowColumn>
-                  <TableRowColumn>{row.age}</TableRowColumn>
+                  <TableRowColumn>{row.birthday}</TableRowColumn>
                   <TableRowColumn>{row.gender}</TableRowColumn>
                   <TableRowColumn>{row.status === 1 ? 'Yes' : 'No'}</TableRowColumn>
                 </TableRow>
@@ -107,7 +145,7 @@ export default class extends Component {
           <Divider/>
           <RaisedButton primary={true} style={styles.button} onTouchTap={this.HandleOpen}>Add</RaisedButton>
           <Dialog
-            title="import a new book"
+            title="add a new user"
             modal={false}
             open={this.state.open}
           >
@@ -117,24 +155,40 @@ export default class extends Component {
                   ? <Alert type="danger"><strong>Error:</strong> {this.state.errorMessage}</Alert>
                   : null
               }
-              /*
-              <FormField label="ISBN" htmlFor="horizontal-form-input-isbn">
-                <FormInput type="isbn" placeholder="ISBN" name="horizontal-form-input-isbn" ref='isbn'/>
-              </FormField>
-              <FormField label="Number" htmlFor="horizontal-form-input-number">
-                <FormInput type="number" placeholder="NUMBER" name="horizontal-form-input-number" ref='number'/>
+
+              <FormField label="Username" htmlFor="horizontal-form-input-username">
+                <FormInput type="username" placeholder="Entry Username" name="horizontal-form-input-username" ref='username'/>
               </FormField>
               <FormField label="Name" htmlFor="horizontal-form-input-name">
                 <FormInput type="name" placeholder="NAME" name="horizontal-form-input-name" ref='name'/>
               </FormField>
-              <FormField label="Author" htmlFor="horizontal-form-input-author">
-                <FormInput type="author" placeholder="AUTHOR" name="horizontal-form-input-author" ref='author'/>
+              <FormField label="Work Number" htmlFor="horizontal-form-input-worknumber">
+                <FormInput type="number" placeholder="WORK NUMBER" name="horizontal-form-input-worknumber" ref='worknumber'/>
               </FormField>
-              <FormField label="Publishing House" htmlFor="horizontal-form-input-publishing_house">
-                <FormInput type="publishing_house" placeholder="PUBLISHING HOUSE" name="horizontal-form-input-publishing_house" ref='publishing_house'/>
+              <FormField label="Password" htmlFor="horizontal-form-input-password">
+                <FormInput type="password" placeholder="PASSWORD" name="horizontal-form-input-password" ref='password'/>
+              </FormField>
+              <FormField label="Verify Password" htmlFor="horizontal-form-input-vpassword">
+                <FormInput type="password" placeholder="VERIFY PASSWORD" name="horizontal-form-input-vpassword" ref='vpassword'/>
+              </FormField>
+              <FormField label="Birthday" htmlFor="horizontal-form-input-birthday">
+                <FormInput type="birthday" placeholder="BIRTHDAY(year-month-day)" name="horizontal-form-input-birthday" ref='birthday'/>
+              </FormField>
+              <FormField label="gender">
+                <RadioButtonGroup name="gender" data-effect="solid" data-place="left" data-tip="gender"
+                  onChange={(data) => {this.setState({gender: data})}} options={[
+                    {value: "male", label: "male"},
+                    {value: "female", label: "female"}
+                ]}/>
+              </FormField>
+              <FormField label="is super manager?">
+                <RadioButtonGroup name="super_manager" data-effect="solid" data-place="left" data-tip="is super manager?"
+                  onChange={(data) => {this.setState({status: data})}} options={[
+                    {value: "Yes", label: "Yes"},
+                    {value: "No", label: "No"}
+                ]}/>
               </FormField>
               <FlatButton label="Cancel" primary={true} onTouchTap={this.HandleClose} />
-              */
               <Button type="primary" submit>Submit</Button>
             </Form>
           </Dialog>

@@ -43,7 +43,7 @@ export default class extends Component {
     const oldPassword = ReactDOM.findDOMNode(this.refs.oldpassword).value
 
     axios
-      .post(config.host+'/editprofile', { username, password, repeatpassword, oldPassword} )
+      .post('/editprofile', { username, password, repeatpassword, oldPassword} )
       .then(res => {
         if(res.data.error) {
           this.setState ({

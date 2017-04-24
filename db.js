@@ -17,5 +17,5 @@ const Bill = require('./schema/Bill')
 module.exports = {
   User: mongoose.model('User', User),
   Books: mongoose.model('Books', Books),
-  Bill: mongoose.moduk('Bill', Bill)
+  Bill: mongoose.model('Bill', Bill)
 }

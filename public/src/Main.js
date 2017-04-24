@@ -15,7 +15,7 @@ import EditProfile from './EditProfile'
 import Login from './Login'
 import UnpaidBooks from './UnpaidBooks'
 import Bill from './Bill'
-import ManageUser from './ManageUser'
+import ManagerUser from './ManagerUser'
 
 export default class extends Component {
   render() {
@@ -39,7 +39,7 @@ export default class extends Component {
             <Route path="/profile/edit" component={EditProfile} />
             <Route path="/bill" component={Bill} />
             <Route path="/unpaid-books" component={UnpaidBooks} />
-            <Route path="/z-admin" component={ManageUser} />
+            <Route path="/z-admin" component={ManagerUser} />
           </Route>
         </Router>
       </MuiThemeProvider>

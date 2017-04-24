@@ -47,6 +47,9 @@ class RightNav extends Component {
       case 'unpaid-books':
         browserHistory.push(config.host + '/unpaid-books')
         break
+      case 'book-list':
+        browserHistory.push(config.host + '/')
+      break
     }
   }
 
@@ -58,8 +61,9 @@ class RightNav extends Component {
         anchorOrigin={{horizontal: 'right', vertical: 'top'}}
         targetOrigin={{horizontal: 'right', vertical: 'top'}}
       >
-        <MenuItem primaryText='manage user' leftIcon={<IconBuild />} value='manage-user' disabled={window.z ? false : true}/>
+        <MenuItem primaryText='manage user' leftIcon={<IconBuild />} value='manage-user' />
         <MenuItem primaryText='unpaid books' leftIcon={<IconBuild />} value='unpaid-books' />
+        <MenuItem primaryText='books list' leftIcon={<IconBuild />} value='book-list' />
         <MenuItem primaryText='bill' leftIcon={<IconBuild />} value='bill' />
         <MenuItem primaryText='profile' leftIcon={<IconPerson />} value='profile'/>
         <MenuItem primaryText='logout' leftIcon={<IconExit />} value='logout'/>

@@ -20,10 +20,26 @@ export default class extends Component {
   constructor() {
     super()
     this.addBook = this.addBook.bind(this)
+    this.payBook = this.payBook.bind(this)
+    this.cancelBook = this.cancelBook.bind(this)
     this.state = {
       height: '600px',
       open: false,
-      errorMessage: null
+      errorMessage: null,
+      selectNumber: null
+    }
+  }
+
+  HandleSelection = (key) => {
+    if(!key[0]) {
+      this.setState({
+        selectNumber: null
+      })
+    }
+    else {
+      this.setState({
+        selectNumber: key[0]
+      })
     }
   }
 
@@ -41,7 +57,7 @@ export default class extends Component {
 
   componentWillMount() {
     axios
-      .post(config.host + '/findbooks')
+      .post('/findbooks')
       .then(res => {
         if(res.data.err) {
           this.setState({
@@ -75,6 +91,11 @@ export default class extends Component {
             errorMessage: res.data.message
           })
         }
+        else {
+          this.setState({
+            errorMessage: null
+          })
+        }
       })
       .catch(err => {
         this.setState({
@@ -82,16 +103,60 @@ export default class extends Component {
         })
       })
 
-    if(!this.errorMessage) window.location.pathname = '/'
+    if(!this.errorMessage) window.location.pathname = '/unpaid-books'
     return false
   }
 
-  paybook = () => {
+  payBook = () => {
+    const isbn = tableData[this.state.selectNumber].isbn
+    axios
+      .post('/paybook', {isbn})
+      .then(res => {
+        if(res.data.error) {
+          this.setState({
+            errorMessage: res.data.message
+          })
+        }
+        else {
+          this.setState({
+            errorMessage: null
+          })
+        }
+      })
+      .catch(err => {
+        this.setState({
+          errorMessage: err.response.data.message
+        })
+      })
 
+    if(!this.state.errorMessage) window.location.pathname = config.host + '/unpaid-books'
+    return false
   }
 
-  cancelbook = () => {
-    
+  cancelBook = () => {
+    const isbn = tableData[this.state.selectNumber].isbn
+    axios
+      .post('/cancelbook', {isbn})
+      .then(res => {
+        if(res.data.error) {
+          this.setState({
+            errorMessage: res.data.message
+          })
+        }
+        else {
+          this.setState({
+            errorMessage: null
+          })
+        }
+      })
+      .catch(err => {
+        this.setState({
+          errorMessage: err.response.data.message
+        })
+      })
+
+    if(!this.state.errorMessage) window.location.pathname = config.host + '/unpaid-books'
+    return false
   }
 
   render() {
@@ -103,6 +168,7 @@ export default class extends Component {
             fixedHeader={true}
             fixedFooter={false}
             selectTable={false}
+            onRowSelection={this.HandleSelection}
           >
             <TableHeader>
               <TableRow>
@@ -165,8 +231,8 @@ export default class extends Component {
               <Button type="primary" submit>Submit</Button>
             </Form>
           </Dialog>
-          <RaisedButton primary={true} style={styles.button} onTouchTap={this.paybook}>Pay</RaisedButton>
-          <RaisedButton primary={true} style={styles.button} onTouchTap={this.cancelbook}>Cancel order</RaisedButton>
+          <RaisedButton primary={true} style={styles.button} onTouchTap={this.payBook} disabled={this.state.selectNumber === null ? true : false} >Pay</RaisedButton>
+          <RaisedButton primary={true} style={styles.button} onTouchTap={this.cancelBook} disabled={this.state.selectNumber === null ? true : false} >Cancel order</RaisedButton>
         </Paper>
       </div>
     )
