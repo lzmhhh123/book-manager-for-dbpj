@@ -17,8 +17,6 @@ const styles = {
   }
 }
 
-var tableData = []
-
 export default class extends Component {
   constructor() {
     super()
@@ -28,7 +26,8 @@ export default class extends Component {
       open: false,
       errorMessage: null,
       gender: null,
-      status: null
+      status: null,
+      tableData: []
     }
   }
 
@@ -55,10 +54,9 @@ export default class extends Component {
         }
         else {
           this.setState({
-            errorMessage: null
+            errorMessage: null,
+            tableData: res.data.users
           })
-          tableData = res.data.books
-          this.forceUpdate()
         }
       })
       .catch(err => {
@@ -90,7 +88,8 @@ export default class extends Component {
         }
         else {
           this.setState({
-            errorMessage: res.data.message
+            errorMessage: res.data.message,
+            tableData: this.state.tableData.concat([{username, name, worknumber, password, birthday, gender, status}])
           })
         }
       })
@@ -100,7 +99,6 @@ export default class extends Component {
         })
       })
 
-    if(!this.errorMessage) window.location.pathname = '/z-admin'
     return false
   }
 
@@ -130,7 +128,7 @@ export default class extends Component {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {tableData.map( (row, index) => (
+              {this.state.tableData.map( (row, index) => (
                 <TableRow key={index} >
                   <TableRowColumn>{row.username}</TableRowColumn>
                   <TableRowColumn>{row.worknumber}</TableRowColumn>
@@ -155,7 +153,6 @@ export default class extends Component {
                   ? <Alert type="danger"><strong>Error:</strong> {this.state.errorMessage}</Alert>
                   : null
               }
-
               <FormField label="Username" htmlFor="horizontal-form-input-username">
                 <FormInput type="username" placeholder="Entry Username" name="horizontal-form-input-username" ref='username'/>
               </FormField>

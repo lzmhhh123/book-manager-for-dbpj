@@ -33,13 +33,13 @@ export default class extends Component {
     return (
       <MuiThemeProvider >
         <Router history={browserHistory}>
-          <Route path="/" component={Topnav} >
+          <Route path="/app" component={Topnav} >
             <IndexRoute component={Homepage} />
-            <Route path="/profile" component={Profile} />
-            <Route path="/profile/edit" component={EditProfile} />
-            <Route path="/bill" component={Bill} />
-            <Route path="/unpaid-books" component={UnpaidBooks} />
-            <Route path="/z-admin" component={ManagerUser} />
+            <Route path="/app/profile" component={Profile} />
+            <Route path="/app/profile/edit" component={EditProfile} />
+            <Route path="/app/bill" component={Bill} />
+            <Route path="/app/unpaid-books" component={UnpaidBooks} />
+            <Route path="/app/z-admin" component={ManagerUser} />
           </Route>
         </Router>
       </MuiThemeProvider>

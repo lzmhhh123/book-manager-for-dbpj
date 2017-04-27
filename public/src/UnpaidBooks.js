@@ -14,8 +14,6 @@ const styles = {
   }
 }
 
-var tableData = []
-
 export default class extends Component {
   constructor() {
     super()
@@ -26,12 +24,13 @@ export default class extends Component {
       height: '600px',
       open: false,
       errorMessage: null,
-      selectNumber: null
+      selectNumber: null,
+      tableData: []
     }
   }
 
   HandleSelection = (key) => {
-    if(!key[0]) {
+    if(typeof(key) === 'undefined') {
       this.setState({
         selectNumber: null
       })
@@ -64,8 +63,12 @@ export default class extends Component {
             errorMessage: res.data.message,
           })
         }
-        tableData = res.data.books
-        this.forceUpdate()
+        else {
+          this.setState({
+            tableData: res.data.books,
+            errorMessage: null
+          })
+        }
       })
       .catch(err => {
         this.setState({
@@ -82,9 +85,10 @@ export default class extends Component {
     const name = ReactDOM.findDOMNode(this.refs.name).value
     const author = ReactDOM.findDOMNode(this.refs.author).value
     const publishing_house = ReactDOM.findDOMNode(this.refs.publishing_house).value
+    const price = ReactDOM.findDOMNode(this.refs.price).value
 
     axios
-      .post(config.host+'/addbook', {isbn, number, name, author, publishing_house})
+      .post(config.host+'/addbook', {isbn, number, name, author, publishing_house, price})
       .then(res => {
         if(res.data.error) {
           this.setState({
@@ -93,7 +97,9 @@ export default class extends Component {
         }
         else {
           this.setState({
-            errorMessage: null
+            errorMessage: null,
+            open: false,
+            tableData: this.state.tableData.concat([{isbn, number, name, author, publishing_house, price, status: 0}])
           })
         }
       })
@@ -102,13 +108,19 @@ export default class extends Component {
           errorMessage: err.response.data.message
         })
       })
-
-    if(!this.errorMessage) window.location.pathname = '/unpaid-books'
     return false
   }
 
   payBook = () => {
-    const isbn = tableData[this.state.selectNumber].isbn
+    let cnt = 0
+    for(let i = 0; i < this.state.tableData.length; i++) {
+      if(!this.state.tableData[i].status) cnt++
+      if(cnt === this.state.selectNumber + 1) {
+        cnt = i
+        break
+      }
+    }
+    const isbn = this.state.tableData[cnt].isbn
     axios
       .post('/paybook', {isbn})
       .then(res => {
@@ -118,6 +130,7 @@ export default class extends Component {
           })
         }
         else {
+          this.state.tableData.splice(cnt, 1)
           this.setState({
             errorMessage: null
           })
@@ -129,12 +142,19 @@ export default class extends Component {
         })
       })
 
-    if(!this.state.errorMessage) window.location.pathname = config.host + '/unpaid-books'
     return false
   }
 
   cancelBook = () => {
-    const isbn = tableData[this.state.selectNumber].isbn
+    let cnt = 0
+    for(let i = 0; i < this.state.tableData.length; i++) {
+      if(!this.state.tableData[i].status) cnt++
+      if(cnt === this.state.selectNumber + 1) {
+        cnt = i
+        break
+      }
+    }
+    const isbn = this.state.tableData[cnt].isbn
     axios
       .post('/cancelbook', {isbn})
       .then(res => {
@@ -144,6 +164,7 @@ export default class extends Component {
           })
         }
         else {
+          this.state.tableData.splice(cnt, 1)
           this.setState({
             errorMessage: null
           })
@@ -155,7 +176,6 @@ export default class extends Component {
         })
       })
 
-    if(!this.state.errorMessage) window.location.pathname = config.host + '/unpaid-books'
     return false
   }
 
@@ -186,7 +206,7 @@ export default class extends Component {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {tableData.map( (row, index) => (
+              {this.state.tableData.map( (row, index) => (
                 row.status === 0 ?
                 <TableRow key={index} >
                   <TableRowColumn>{row.isbn}</TableRowColumn>
@@ -226,6 +246,9 @@ export default class extends Component {
               </FormField>
               <FormField label="Publishing House" htmlFor="horizontal-form-input-publishing_house">
                 <FormInput type="publishing_house" placeholder="PUBLISHING HOUSE" name="horizontal-form-input-publishing_house" ref='publishing_house'/>
+              </FormField>
+              <FormField label="Price" htmlFor="horizontal-form-input-price">
+                <FormInput type="numer" placeholder="PRICE" name="horizontal-form-input-price" ref='price'/>
               </FormField>
               <FlatButton label="Cancel" primary={true} onTouchTap={this.HandleClose} />
               <Button type="primary" submit>Submit</Button>

@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 //Set up default mongoose connection
-var mongDB = 'mongodb://127.0.0.1/book-manager-for-dbpj';
+var mongDB = 'mongodb://127.0.0.1/book-manager';
 mongoose.connect(mongDB);
 
 //Get the default connection

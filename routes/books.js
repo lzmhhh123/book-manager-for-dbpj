@@ -56,10 +56,10 @@ router.post('/sellbook', (req, res) => {
     if(!book) {
       return res.status(401).send({error: 1, message: 'Not that book.'})
     }
-    if(!number || number < book.number || number > book.number) {
+    if(!number || number > book.number) {
       return res.status(401).send({error: 1, message: 'Invalid number.'})
     }
-    let newbill = new Bill({isbn, name: book.name, income: number*book.price, date: new Date()})
+    let newbill = new Bill({isbn, name: book.name, income: book.number*book.price, date: new Date()})
     newbill.save(err => {
       if(err) {
         res.status(500).send({error: 1, message: 'Sever Error.'})
@@ -102,7 +102,7 @@ router.post('/paybook', (req, res) => {
     if(!book) {
       return res.status(401).send({error: 1, message: 'Not that book.'})
     }
-    let newbill = new Bill({isbn, name: book.name, income: -number*book.price, date: new Date()})
+    let newbill = new Bill({isbn, name: book.name, income: -book.number*book.price, date: new Date()})
     newbill.save(err => {
       if(err) {
         res.status(500).send({error: 1, message: 'Sever Error.'})

@@ -36,19 +36,19 @@ class RightNav extends Component {
           })
         break
       case 'profile':
-        browserHistory.push(config.host + '/profile')
+        browserHistory.push('/app/profile')
         break
       case 'manage-user':
-        browserHistory.push(config.host + '/z-admin')
+        browserHistory.push('/app/z-admin')
         break
       case 'bill':
-        browserHistory.push(config.host + '/bill')
+        browserHistory.push('/app/bill')
         break
       case 'unpaid-books':
-        browserHistory.push(config.host + '/unpaid-books')
+        browserHistory.push('/app/unpaid-books')
         break
       case 'book-list':
-        browserHistory.push(config.host + '/')
+        browserHistory.push('/app')
       break
     }
   }
@@ -75,7 +75,7 @@ class RightNav extends Component {
 export default class extends Component {
 
   GoHome() {
-    window.location.pathname='/'
+    window.location.pathname='/app'
   }
 
   render() {

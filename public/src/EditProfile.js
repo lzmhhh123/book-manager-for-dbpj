@@ -51,7 +51,7 @@ export default class extends Component {
           })
         }
         setTimeout(() => {
-          window.location.pathname = "/dashboard"
+          window.location.pathname = "/app"
         }, 100)
       })
       .catch(err => {
