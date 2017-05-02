@@ -30,7 +30,7 @@ export default class extends Component {
   }
 
   HandleSelection = (key) => {
-    if(typeof(key) === 'undefined') {
+    if(typeof(key[0]) === 'undefined') {
       this.setState({
         selectNumber: null
       })

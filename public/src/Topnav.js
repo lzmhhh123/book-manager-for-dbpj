@@ -13,6 +13,8 @@ import IconButton from 'material-ui/IconButton'
 import IconPerson from 'material-ui/svg-icons/social/person'
 import IconExit from 'material-ui/svg-icons/action/exit-to-app'
 import IconBuild from 'material-ui/svg-icons/action/build'
+import IconBook from 'material-ui/svg-icons/action/book'
+import IconWallet from 'material-ui/svg-icons/action/account-balance-wallet'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 
 injectTapEventPlugin()
@@ -32,7 +34,7 @@ class RightNav extends Component {
         axios
           .post(config.host + '/logout')
           .then(() => {
-            window.location.reload()
+            window.location.pathname = '/app'
           })
         break
       case 'profile':
@@ -62,9 +64,9 @@ class RightNav extends Component {
         targetOrigin={{horizontal: 'right', vertical: 'top'}}
       >
         <MenuItem primaryText='manage user' leftIcon={<IconBuild />} value='manage-user' />
-        <MenuItem primaryText='unpaid books' leftIcon={<IconBuild />} value='unpaid-books' />
-        <MenuItem primaryText='books list' leftIcon={<IconBuild />} value='book-list' />
-        <MenuItem primaryText='bill' leftIcon={<IconBuild />} value='bill' />
+        <MenuItem primaryText='unpaid books' leftIcon={<IconBook />} value='unpaid-books' />
+        <MenuItem primaryText='books list' leftIcon={<IconBook />} value='book-list' />
+        <MenuItem primaryText='bill' leftIcon={<IconWallet />} value='bill' />
         <MenuItem primaryText='profile' leftIcon={<IconPerson />} value='profile'/>
         <MenuItem primaryText='logout' leftIcon={<IconExit />} value='logout'/>
       </IconMenu>

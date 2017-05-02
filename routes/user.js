@@ -3,13 +3,13 @@ const router = express.Router()
 
 const mongoose = require('mongoose')
 const { User } = require('../db')
+const md5 = require('spark-md5')
 
 router.post('/finduser', (req, res) => {
   User.find((err, users) => {
     if(err) {
       return res.status(500).send({ error: 1, message: 'Server Error.'})
     }
-    console.log('haha');
     return res.send({ error: 0, users})
   })
 })

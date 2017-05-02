@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import axios from 'axios'
-import {Paper, RaisedButton, Divider, FlatButton} from 'material-ui'
-import {Table, TableBody, TableHeader, TableFooter, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
-import TextField from 'material-ui/TextField'
+import {Paper, RaisedButton, Divider, FlatButton, RadioButtonGroup, RadioButton} from 'material-ui'
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
 import Dialog from 'material-ui/Dialog'
-import {Form, FormField, FormInput, Alert, Button, Radio, RadioButtonGroup} from 'elemental'
-import config from '../../config/index.json'
+import {Form, FormField, FormInput, Alert, Button} from 'elemental'
 
 const styles = {
   button: {
@@ -34,6 +32,20 @@ export default class extends Component {
   HandleOpen = () => {
     this.setState({
       open: true
+    })
+  }
+
+  changeGender = (event, value) => {
+    event.preventDefault()
+    this.setState({
+      gender: value
+    })
+  }
+
+  changeStatus = (event, value) => {
+    event.preventDefault()
+    this.setState({
+      status: value
     })
   }
 
@@ -80,7 +92,7 @@ export default class extends Component {
 
     axios
       .post('/adduser', {username, name, worknumber, password, vpassword, birthday, gender, status})
-      .ther(res => {
+      .then(res => {
         if(res.data.error) {
           this.setState({
             errorMessage: res.data.message
@@ -89,7 +101,8 @@ export default class extends Component {
         else {
           this.setState({
             errorMessage: res.data.message,
-            tableData: this.state.tableData.concat([{username, name, worknumber, password, birthday, gender, status}])
+            tableData: this.state.tableData.concat([{username, name, worknumber, password, birthday, gender, status}]),
+            open: false
           })
         }
       })
@@ -112,7 +125,7 @@ export default class extends Component {
             fixedFooter={false}
             selectTable={false}
           >
-            <TableHeader>
+            <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
               <TableRow>
                 <TableHeaderColumn colSpan="6" tooltip="book list" style={{textAlign: 'center'}}>
                   User List
@@ -127,7 +140,7 @@ export default class extends Component {
                 <TableHeaderColumn tooltip="Is super user?">Super user</TableHeaderColumn>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody displayRowCheckbox={false}>
               {this.state.tableData.map( (row, index) => (
                 <TableRow key={index} >
                   <TableRowColumn>{row.username}</TableRowColumn>
@@ -171,19 +184,17 @@ export default class extends Component {
               <FormField label="Birthday" htmlFor="horizontal-form-input-birthday">
                 <FormInput type="birthday" placeholder="BIRTHDAY(year-month-day)" name="horizontal-form-input-birthday" ref='birthday'/>
               </FormField>
-              <FormField label="gender">
-                <RadioButtonGroup name="gender" data-effect="solid" data-place="left" data-tip="gender"
-                  onChange={(data) => {this.setState({gender: data})}} options={[
-                    {value: "male", label: "male"},
-                    {value: "female", label: "female"}
-                ]}/>
+              <FormField label="Gender">
+                <RadioButtonGroup name="gender" onChange={this.changeGender}>
+                  <RadioButton value="male" label="male" />
+                  <RadioButton value="female" label="female" />
+                </RadioButtonGroup>
               </FormField>
-              <FormField label="is super manager?">
-                <RadioButtonGroup name="super_manager" data-effect="solid" data-place="left" data-tip="is super manager?"
-                  onChange={(data) => {this.setState({status: data})}} options={[
-                    {value: "Yes", label: "Yes"},
-                    {value: "No", label: "No"}
-                ]}/>
+              <FormField label="Is super manager?">
+              <RadioButtonGroup name="super_manager" onChange={this.changeStatus}>
+                <RadioButton value="Yes" label="Yes" />
+                <RadioButton value="No" label="No" />
+              </RadioButtonGroup>
               </FormField>
               <FlatButton label="Cancel" primary={true} onTouchTap={this.HandleClose} />
               <Button type="primary" submit>Submit</Button>

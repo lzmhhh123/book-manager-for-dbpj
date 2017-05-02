@@ -23,7 +23,7 @@ export default class extends Component {
   }
 
   login(event) {
-    const username = ReactDOM.findDOMNode(this.refs.name).value
+    const username = ReactDOM.findDOMNode(this.refs.username).value
     const password = ReactDOM.findDOMNode(this.refs.password).value
     axios
       .post('/login', {username, password})
@@ -59,7 +59,7 @@ export default class extends Component {
                 : null
             }
             <FormField label="username" htmlFor="form-input-username">
-              <FormInput autoFocus type="username" placeholder="Enter username" name="name" ref="name" />
+              <FormInput autoFocus type="username" placeholder="Enter username" name="username" ref="username" />
             </FormField>
             <FormField label="password" htmlFor="form-input-password">
               <FormInput type="password" placeholder="password" name="password" ref="password" />

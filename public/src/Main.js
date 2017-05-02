@@ -20,15 +20,15 @@ import ManagerUser from './ManagerUser'
 export default class extends Component {
   render() {
 
-    // if(!window.z) {
-    //   return (
-    //     <MuiThemeProvider>
-    //       <Router history={browserHistory}>
-    //         <Route path="/" component={Login} />
-    //       </Router>
-    //     </MuiThemeProvider>
-    //   )
-    // }
+    //  if(!window.z) {
+    //    return (
+    //      <MuiThemeProvider>
+    //        <Router history={browserHistory}>
+    //          <Route path="/app" component={Login} />
+    //        </Router>
+    //      </MuiThemeProvider>
+    //    )
+    //  }
 
     return (
       <MuiThemeProvider >

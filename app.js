@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var cors = require('express-cors');
+var fs = require('fs')
 
 var app = express();
 
@@ -22,13 +23,20 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
 }));
-// app.get('/', ((req, res) => {
+
+// app.get('/app/*', (req, res) => {
 //   fs.readFile('./public/build/index.html', (err, data) => {
 //     let s = ""
-//     if(req.session.user) s = JSON.stringify(req.session.user)
-//     data.replace(/<script/, "<script>window.z=" + s + "</script><script")
+//     console.log(data.toString())
+//     if(req.session.user) {
+//       s = JSON.stringify(req.session.user)
+//       fs.writeFile('./public/build/index.html', (data.toString()).replace("<script", "<script>window.z=" + s + ";</script><script"), (err) => {
+//         if(err) throw err
+//       })
+//     }
 //   })
-// })())
+// })
+
 app.use('/app', express.static(path.join(__dirname, 'public', 'build')));
 
 app.use('/', require('./routes/auth'))

@@ -9,7 +9,7 @@ router.post('/login', (req, res) => {
   if(!username || !password) {
     return res.status(401).send({ error: 1, message: 'Username and password cannot be empty.' })
   }
-  User.findOne({ username }, (err, res) => {
+  User.findOne({ username }, (err, user) => {
     if(err) {
       return res.status(500).send({ error: 1, message: 'Server Error.'})
     }
@@ -21,7 +21,7 @@ router.post('/login', (req, res) => {
         return res.status(401).send({ error:1, message: 'Incorrect username or password.'})
       }
       req.session.user = user
-      return res.send({ error: 0, message: 'Login successfully.', user})
+      return res.send({ error: 0, message: 'Login successfully.'})
     })
   })
 })
