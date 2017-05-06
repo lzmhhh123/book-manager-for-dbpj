@@ -11,6 +11,10 @@ import config from '../../config/index.json'
 const styles = {
   button: {
     margin: 12
+  },
+  TextField: {
+    margin: 20,
+    width: 400
   }
 }
 
@@ -25,6 +29,7 @@ export default class extends Component {
       open: false,
       errorMessage: null,
       selectNumber: null,
+      s: '',
       tableData: []
     }
   }
@@ -40,6 +45,21 @@ export default class extends Component {
         selectNumber: key[0]
       })
     }
+  }
+
+  check = (row) => {
+    if(row.status != 0) return false
+    if(row.isbn.indexOf(this.state.s) === -1 &&
+       row.name.indexOf(this.state.s) === -1 &&
+       row.author.indexOf(this.state.s) === -1 &&
+       row.publishing_house.indexOf(this.state.s) === -1) return false
+    return true
+  }
+
+  search = (event, value) => {
+    this.setState({
+      s: value
+    })
   }
 
   HandleOpen = () => {
@@ -114,7 +134,7 @@ export default class extends Component {
   payBook = () => {
     let cnt = 0
     for(let i = 0; i < this.state.tableData.length; i++) {
-      if(!this.state.tableData[i].status) cnt++
+      if(this.check(this.state.tableData[i])) cnt++
       if(cnt === this.state.selectNumber + 1) {
         cnt = i
         break
@@ -148,7 +168,7 @@ export default class extends Component {
   cancelBook = () => {
     let cnt = 0
     for(let i = 0; i < this.state.tableData.length; i++) {
-      if(!this.state.tableData[i].status) cnt++
+      if(this.check(this.state.tableData[i])) cnt++
       if(cnt === this.state.selectNumber + 1) {
         cnt = i
         break
@@ -207,7 +227,7 @@ export default class extends Component {
             </TableHeader>
             <TableBody>
               {this.state.tableData.map( (row, index) => (
-                row.status === 0 ?
+                this.check(row) ?
                 <TableRow key={index} >
                   <TableRowColumn>{row.isbn}</TableRowColumn>
                   <TableRowColumn>{row.number}</TableRowColumn>
@@ -256,6 +276,7 @@ export default class extends Component {
           </Dialog>
           <RaisedButton primary={true} style={styles.button} onTouchTap={this.payBook} disabled={this.state.selectNumber === null ? true : false} >Pay</RaisedButton>
           <RaisedButton primary={true} style={styles.button} onTouchTap={this.cancelBook} disabled={this.state.selectNumber === null ? true : false} >Cancel order</RaisedButton>
+          <TextField hintText="ISBN/Name/Author/Publishing house" floatingLabelText="Search" style={styles.TextField} onChange={this.search} />
         </Paper>
       </div>
     )

@@ -11,6 +11,10 @@ import config from '../../config/index.json'
 const styles = {
   button: {
     margin: 12
+  },
+  TextField: {
+    margin: 20,
+    width: 400
   }
 }
 
@@ -24,8 +28,24 @@ export default class extends Component {
       open: false,
       open1: false,
       errorMessage: null,
+      s: '',
       tableData: []
     }
+  }
+
+  check = (row) => {
+    if(row.status != 1) return false
+    if(row.isbn.indexOf(this.state.s) === -1 &&
+       row.name.indexOf(this.state.s) === -1 &&
+       row.author.indexOf(this.state.s) === -1 &&
+       row.publishing_house.indexOf(this.state.s) === -1) return false
+    return true
+  }
+
+  search = (event, value) => {
+    this.setState({
+      s: value
+    })
   }
 
   HandleOpen = () => {
@@ -89,7 +109,7 @@ export default class extends Component {
           errorMessage: err.response.data.message
         })
       })
-      
+
     return false
   }
 
@@ -181,7 +201,7 @@ export default class extends Component {
             </TableHeader>
             <TableBody displayRowCheckbox={false}>
               {this.state.tableData.map( (row, index) => (
-                row.status === 1 ?
+                this.check(row) ?
                 <TableRow key={index}>
                   <TableRowColumn>{row.isbn}</TableRowColumn>
                   <TableRowColumn>{row.number}</TableRowColumn>
@@ -247,6 +267,7 @@ export default class extends Component {
               <Button type="primary" submit>Submit</Button>
             </Form>
           </Dialog>
+          <TextField hintText="ISBN/Name/Author/Publishing house" floatingLabelText="Search" style={styles.TextField} onChange={this.search} />
         </Paper>
       </div>
     )
