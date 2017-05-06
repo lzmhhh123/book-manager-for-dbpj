@@ -59,7 +59,7 @@ router.post('/sellbook', (req, res) => {
     if(!number || number > book.number) {
       return res.status(401).send({error: 1, message: 'Invalid number.'})
     }
-    let newbill = new Bill({isbn, name: book.name, income: book.number*book.price, date: new Date()})
+    let newbill = new Bill({isbn, name: book.name, income: number*book.price, date: new Date()})
     newbill.save(err => {
       if(err) {
         res.status(500).send({error: 1, message: 'Sever Error.'})
@@ -109,6 +109,34 @@ router.post('/paybook', (req, res) => {
       }
     })
     book.status = 1
+    book.save(err => {
+      if(err) {
+        res.status(500).send({error: 1, message: 'Sever Error.'})
+      }
+    })
+    return res.send({error: 0})
+  })
+})
+
+router.post('/editBook', (req, res) => {
+  let {isbn, name, author, publishing_house, price} = req.body
+  if(!isbn) {
+    return res.status(401).send({error: 1, message: 'ISBN can\'t be empty.'})
+  }
+  if(!name && !author && !publishing_house && !price) {
+    return res.status(401).send({eror: 1, message: 'Name & Author & Publishing house & Price can not be empty.'})
+  }
+  Books.findOne({isbn}, (err, book) => {
+    if(err) {
+      return res.status(500).send({error: 1, message: 'Sever Error.'})
+    }
+    if(!book) {
+      return res.status(401).send({error: 1, message: 'Not that book.'})
+    }
+    if(name) book.name = name
+    if(author) book.author = author
+    if(publishing_house) book.publishing_house = publishing_house
+    if(price) book.price = price
     book.save(err => {
       if(err) {
         res.status(500).send({error: 1, message: 'Sever Error.'})

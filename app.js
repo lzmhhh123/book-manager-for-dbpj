@@ -19,25 +19,18 @@ app.use(cookieParser());
 app.use(session({
   secret: 'lzmhhh123',
   name: 'book-manager-for-dbpj',
-  cookie: {maxAge: 100*80},
+  cookie: {maxAge: 1000*6000},
   resave: false,
   saveUninitialized: true,
 }));
 
-// app.get('/app/*', (req, res) => {
-//   fs.readFile('./public/build/index.html', (err, data) => {
-//     let s = ""
-//     console.log(data.toString())
-//     if(req.session.user) {
-//       s = JSON.stringify(req.session.user)
-//       fs.writeFile('./public/build/index.html', (data.toString()).replace("<script", "<script>window.z=" + s + ";</script><script"), (err) => {
-//         if(err) throw err
-//       })
-//     }
-//   })
-// })
-
 app.use('/app', express.static(path.join(__dirname, 'public', 'build')));
+app.get('/app', (req, res) => {
+  const PATH = path.join(global.__dirname, 'public', 'build', 'index.html')
+  fs.readFile(PATH, (err, data) => {
+    res.send((data.toString()).replace('<script', '<script>window.z ='  + JSON.stringfy(req.session.user) + ';</script><script'))
+  })
+})
 
 app.use('/', require('./routes/auth'))
 app.use('/', require('./routes/books'))

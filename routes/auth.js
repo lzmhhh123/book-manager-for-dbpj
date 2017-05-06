@@ -4,6 +4,11 @@ const router = express.Router()
 const mongoose = require('mongoose')
 const { User } = require('../db')
 
+router.post('/islogin', (req, res) => {
+  console.log(req.session.user)
+  return res.send({user: req.session.user})
+})
+
 router.post('/login', (req, res) => {
   const { username, password } = req.body
   if(!username || !password) {

@@ -3,7 +3,8 @@ import {
   Router,
   Route,
   browserHistory,
-  IndexRoute
+  IndexRoute,
+  Redirect
 } from 'react-router'
 import lightBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -16,19 +17,27 @@ import Login from './Login'
 import UnpaidBooks from './UnpaidBooks'
 import Bill from './Bill'
 import ManagerUser from './ManagerUser'
+import axios from 'axios'
 
 export default class extends Component {
-  render() {
 
-    //  if(!window.z) {
-    //    return (
-    //      <MuiThemeProvider>
-    //        <Router history={browserHistory}>
-    //          <Route path="/app" component={Login} />
-    //        </Router>
-    //      </MuiThemeProvider>
-    //    )
-    //  }
+  constructor() {
+    super()
+    this.state = {
+      user: null
+    }
+  }
+
+  render() {
+    // if(!window.z) {
+    //   return (
+    //    <MuiThemeProvider>
+    //      <Router history={browserHistory}>
+    //        <Route path="/app" component={Login} />
+    //      </Router>
+    //    </MuiThemeProvider>
+    //   )
+    // }
 
     return (
       <MuiThemeProvider >

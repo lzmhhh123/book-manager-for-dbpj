@@ -101,7 +101,7 @@ export default class extends Component {
         else {
           this.setState({
             errorMessage: res.data.message,
-            tableData: this.state.tableData.concat([{username, name, worknumber, password, birthday, gender, status}]),
+            tableData: this.state.tableData.concat([{username, name, worknumber, password, birthday, gender, status: status === 'Yes' ? 1 : 0}]),
             open: false
           })
         }

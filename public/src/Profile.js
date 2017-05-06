@@ -54,7 +54,7 @@ export default class extends Component {
             <ListItem
               disabled={true}
               rightIconButton={
-                <Link to="profile/edit">
+                <Link to="app/profile/edit">
                   <IconButton tooltip="Edit your profile." touch={true}><Edit/></IconButton>
                 </Link>}
             />
