@@ -210,7 +210,7 @@ export default class extends Component {
             selectTable={false}
             onRowSelection={this.HandleSelection}
           >
-            <TableHeader>
+            <TableHeader displaySelectAll={false}>
               <TableRow>
                 <TableHeaderColumn colSpan="6" tooltip="book list" style={{textAlign: 'center'}}>
                   Unpaid Book List

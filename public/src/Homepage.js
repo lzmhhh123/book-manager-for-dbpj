@@ -62,13 +62,15 @@ export default class extends Component {
 
   HandleClose = () => {
     this.setState({
-      open: false
+      open: false,
+      errorMessage: null
     })
   }
 
   HandleClose1 = () => {
     this.setState({
-      open1: false
+      open1: false,
+      errorMessage: null
     })
   }
 
