@@ -73,6 +73,7 @@ export default class extends Component {
   }
 
   editBook(event) {
+    event.preventDefault()
     const isbn = ReactDOM.findDOMNode(this.refs.isbn1).value
     const name = ReactDOM.findDOMNode(this.refs.name1).value
     const author = ReactDOM.findDOMNode(this.refs.author1).value
@@ -114,6 +115,7 @@ export default class extends Component {
   }
 
   sellBook(event) {
+    event.preventDefault()
     const number = ReactDOM.findDOMNode(this.refs.number).value
     const isbn = ReactDOM.findDOMNode(this.refs.isbn).value
     axios

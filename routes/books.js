@@ -109,9 +109,29 @@ router.post('/paybook', (req, res) => {
       }
     })
     book.status = 1
-    book.save(err => {
+    Books.findOne({isbn: book.isbn, status: 1}, (err, book1) => {
       if(err) {
         res.status(500).send({error: 1, message: 'Sever Error.'})
+      }
+      if(!book1) {
+        book.save(err => {
+          if(err) {
+            res.status(500).send({error: 1, message: 'Sever Error.'})
+          }
+        })
+      }
+      else {
+        book1.number += book.number
+        book1.save(err => {
+          if(err) {
+            res.status(500).send({err: 1, message: 'Sever Error'})
+          }
+        })
+        book.remove((err, res) => {
+          if(err) {
+            res.status(500).send({err: 1, message: 'Sever Error'})
+          }
+        })
       }
     })
     return res.send({error: 0})

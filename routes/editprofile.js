@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 
-const md5 = require('spark-md5')
 const { User } = require('../db')
 
 router.post('/editprofile', (req, res) => {
@@ -17,17 +16,13 @@ router.post('/editprofile', (req, res) => {
     return res.status(500).send({ error: 1, message: 'Password is not equal to verified password.'})
   }
 
-  User.findOne({ _id: user._id }, (err, user) => {
+  User.findOne({ worknumber: user.worknumber }, (err, user) => {
     if (err || !user) {
       return res.status(500).send({ error: 1, message: 'Server error.' })
     }
     user.checkPassword(oldPassword, (err, user) => {
       if (err) {
         return res.status(401).send({ error: 1, message: 'Incorrect password.' })
-      }
-      if (user.status !== 0) {
-        // not activated
-        return res.status(401).send({ error: 1, message: 'Please check your email and activate your account.' })
       }
       if (username) {
         User.findOne({ username } , (err, user) => {
@@ -38,10 +33,10 @@ router.post('/editprofile', (req, res) => {
             return res.status(401).send({ error: 1, message: 'New username is not unique.'})
           }
         })
-        user.name = username
+        user.username = username
       }
       if (password) {
-        user.pwd = md5(password + PWD_SALT)
+        user.pwd = password
       }
       user.save(err => {
         if (err) {
