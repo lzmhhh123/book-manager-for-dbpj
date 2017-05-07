@@ -8,6 +8,12 @@ import Dialog from 'material-ui/Dialog'
 import {Form, FormField, FormInput, Alert, Button} from 'elemental'
 import config from '../../config/index.json'
 
+const styles = {
+  TextField: {
+    margin: 20,
+    width: 400
+  }
+}
 
 export default class extends Component {
   constructor() {
@@ -15,8 +21,15 @@ export default class extends Component {
     this.state = {
       height: '600px',
       errorMessage: null,
+      s: '',
       tableData: []
     }
+  }
+
+  search = (event, value) => {
+    this.setState({
+      s: value
+    })
   }
 
   componentWillMount() {
@@ -70,6 +83,7 @@ export default class extends Component {
             </TableHeader>
             <TableBody displayRowCheckbox={false}>
               {this.state.tableData.map( (row, index) => (
+                row.date.indexOf(this.state.s) === -1 ? null :
                 <TableRow key={index}>
                   <TableRowColumn>{row.isbn}</TableRowColumn>
                   <TableRowColumn>{row.name}</TableRowColumn>
@@ -79,6 +93,7 @@ export default class extends Component {
               ))}
             </TableBody>
           </Table>
+          <TextField hintText="Time like(year or year-month)" floatingLabelText="Search" style={styles.TextField} onChange={this.search} />
         </Paper>
       </div>
     )

@@ -6,16 +6,19 @@ import {List, ListItem} from 'material-ui/List'
 import IconButton from 'material-ui/IconButton'
 import Person from 'material-ui/svg-icons/social/person'
 import Divider from 'material-ui/Divider'
-import Edit from 'material-ui/svg-icons/image/edit';
-import Mail from 'material-ui/svg-icons/content/mail'
+import Edit from 'material-ui/svg-icons/image/edit'
+import Date_range from 'material-ui/svg-icons/action/date-range'
+import Format_list_numbered from 'material-ui/svg-icons/editor/format-list-numbered'
 import People from 'material-ui/svg-icons/social/people'
 
 export default class extends Component {
 
   render() {
-    let username = "window.z.username"
-    let email = "window.z.email"
-    let identity = "window.z.identity"
+    let username = window.z.username
+    let name = window.z.name
+    let worknumber = window.z.worknumber
+    let gender = window.z.gender
+    let birthday = window.z.birthday
 
     return (
       <div className="fixed-card">
@@ -32,21 +35,41 @@ export default class extends Component {
           <Divider inset={true} />
           <List>
             <ListItem
-              secondaryText={"Mail"}
+              secondaryText={"Name"}
               disabled={true} />
             <ListItem
-              leftIcon={<Mail />}
-              primaryText={`${email}`}
+              leftIcon={<Person />}
+              primaryText={`${name}`}
               disabled={true} />
           </List>
           <Divider inset={true} />
           <List>
             <ListItem
-              secondaryText={"Identity"}
+              secondaryText={"Gender"}
               disabled={true} />
 	          <ListItem
               leftIcon={<People />}
-              primaryText={`${identity}`}
+              primaryText={`${gender}`}
+              disabled={true} />
+          </List>
+          <Divider inset={true} />
+          <List>
+            <ListItem
+              secondaryText={"Work number"}
+              disabled={true} />
+	          <ListItem
+              leftIcon={<Format_list_numbered />}
+              primaryText={`${worknumber}`}
+              disabled={true} />
+          </List>
+          <Divider inset={true} />
+          <List>
+            <ListItem
+              secondaryText={"Birthday"}
+              disabled={true} />
+	          <ListItem
+              leftIcon={<Date_range />}
+              primaryText={`${birthday}`}
               disabled={true} />
           </List>
           <Divider inset={true} />

@@ -23,6 +23,7 @@ export default class extends Component {
   }
 
   login(event) {
+    event.preventDefault()
     const username = ReactDOM.findDOMNode(this.refs.username).value
     const password = ReactDOM.findDOMNode(this.refs.password).value
     axios

@@ -24,13 +24,13 @@ app.use(session({
   saveUninitialized: true,
 }));
 
-app.use('/app', express.static(path.join(__dirname, 'public', 'build')));
 app.get('/app', (req, res) => {
-  const PATH = path.join(global.__dirname, 'public', 'build', 'index.html')
+  const PATH = path.join(__dirname, 'public', 'build', 'index.html')
   fs.readFile(PATH, (err, data) => {
-    res.send((data.toString()).replace('<script', '<script>window.z ='  + JSON.stringfy(req.session.user) + ';</script><script'))
+    res.send((data.toString()).replace('<script', '<script>window.z ='  + JSON.stringify(req.session.user) + ';</script><script'))
   })
 })
+app.use('/app', express.static(path.join(__dirname, 'public', 'build')));
 
 app.use('/', require('./routes/auth'))
 app.use('/', require('./routes/books'))

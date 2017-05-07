@@ -76,7 +76,7 @@ export default class extends Component {
               : null
           }
             <FormField label={"Username"} htmlFor="form-input-username">
-              <FormInput autoFocus type="username" placeholder="Your new name(First, Last), not neccessary." name="name" ref="name"/>
+              <FormInput autoFocus type="username" placeholder="Your new username, not neccessary." name="name" ref="name"/>
             </FormField>
             <FormField label={"Password"} htmlFor="form-input-password">
               <FormInput autoFocus type="password" placeholder="Your new password, not neccessary." name="password" ref="password"/>
@@ -91,7 +91,7 @@ export default class extends Component {
             <Divider />
             <div style={styles.splitStyle}></div>
             <Button type="primary" submit>OK</Button>
-            <Link to="/profile"><Button type="link-cancel">Cancel</Button></Link>
+            <Link to="/app/profile"><Button type="link-cancel">Cancel</Button></Link>
           </Form>
         </Paper>
       </div>

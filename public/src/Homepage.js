@@ -238,7 +238,7 @@ export default class extends Component {
           </Dialog>
           <RaisedButton primary={true} style={styles.button} onTouchTap={this.HandleOpen1} >Edit</RaisedButton>
           <Dialog
-            title="how many to sell?"
+            title="Edit a book."
             modal={false}
             open={this.state.open1}
           >
