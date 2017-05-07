@@ -63,7 +63,7 @@ class RightNav extends Component {
         anchorOrigin={{horizontal: 'right', vertical: 'top'}}
         targetOrigin={{horizontal: 'right', vertical: 'top'}}
       >
-        <MenuItem primaryText='manage user' leftIcon={<IconBuild />} value='manage-user' />
+        <MenuItem primaryText='manage user' leftIcon={<IconBuild />} value='manage-user' disabled={window.z.status === 0}/>
         <MenuItem primaryText='unpaid books' leftIcon={<IconBook />} value='unpaid-books' />
         <MenuItem primaryText='books list' leftIcon={<IconBook />} value='book-list' />
         <MenuItem primaryText='bill' leftIcon={<IconWallet />} value='bill' />
