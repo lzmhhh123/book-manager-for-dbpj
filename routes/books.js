@@ -37,13 +37,15 @@ router.post('/addbook', (req, res) => {
         return res.send({error: 0})
       })
     }
-    let newbook = new Books({isbn, number, name, author, publishing_house, price, status: 0})
-    newbook.save(err => {
-      if(err) {
-        return res.status(500).send({error: 1, message: 'Sever Error.'})
-      }
-      return res.send({error: 0})
-    })
+    else {
+      let newbook = new Books({isbn, number, name, author, publishing_house, price, status: 0})
+      newbook.save(err => {
+        if(err) {
+          return res.status(500).send({error: 1, message: 'Sever Error.'})
+        }
+        return res.send({error: 0})
+      })
+    }
   })
 })
 

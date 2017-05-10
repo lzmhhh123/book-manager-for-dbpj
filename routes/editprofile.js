@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 
+const md5 = require('spark-md5')
+
 const { User } = require('../db')
 
 router.post('/editprofile', (req, res) => {
@@ -36,7 +38,7 @@ router.post('/editprofile', (req, res) => {
         user.username = username
       }
       if (password) {
-        user.pwd = password
+        user.password = md5.hash(password)
       }
       user.save(err => {
         if (err) {

@@ -38,7 +38,7 @@ router.post('/adduser', (req, res) => {
       if(user) {
         return res.status(401).send({ error: 1, message: 'Work Number is exist.'})
       }
-      let newuser = new User({username, worknumber, password, birthday, name, gender, status: s == 'Yes' ? 1 : 0})
+      let newuser = new User({username, worknumber, password: md5.hash(password), birthday, name, gender, status: s == 'Yes' ? 1 : 0})
       newuser.save(err => {
         if(err) {
           return res.status(500).send({ error: 1, message: 'Server Error.'})

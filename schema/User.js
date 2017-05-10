@@ -33,7 +33,7 @@ const User = new mongoose.Schema({
 })
 
 User.methods.checkPassword = function(pwd, next) {
-  if(this.password == pwd) {
+  if(this.password == md5.hash(pwd)) {
     return next(null, this)
   }
   else return next(new Error, this)
