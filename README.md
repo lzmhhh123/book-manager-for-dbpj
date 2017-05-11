@@ -8,7 +8,7 @@
 ## Build & Run
 1. `mongod --dbpath (DB path)`
 To start DB server
-2. `npm install` & `cd public & npm install` or ~~ just use yarn
+2. `npm install` & `cd public & npm install`
 To install modules
 3. `cd public` & `yarn build` or `npm run build`
 To build views
