@@ -1,9 +1,14 @@
 # book-manager-for-dbpj
 
-cd public & yarn build (npm run build)
+## Dependence
+1.NPM modules
+2.mongodb
+3.node >= 6
 
+## Build
+1.mongod --dbpath (DB path)
+To start DB server
+2.cd public & yarn build (npm run build)
 To build views
-
-cd .. & npm start
-
+3.cd .. & npm start
 To run it at localhost:3000
